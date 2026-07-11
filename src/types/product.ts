@@ -1,21 +1,28 @@
-/** DummyJSON product — only the fields this app consumes. */
-export interface Product {
+/**
+ * Listing-card fields — the trimmed shape fetched via DummyJSON's `select`
+ * param (`id` is always included by the API regardless of selection).
+ */
+export interface ProductSummary {
   id: number
   title: string
-  description: string
   category: string
   price: number
-  discountPercentage: number
   rating: number
-  stock: number
   /** Some DummyJSON products (e.g. groceries) have no brand. */
   brand?: string
   thumbnail: string
+}
+
+/** Full product from GET /products/:id — only the fields this app consumes. */
+export interface Product extends ProductSummary {
+  description: string
+  discountPercentage: number
+  stock: number
   images: string[]
 }
 
 export interface ProductsResponse {
-  products: Product[]
+  products: ProductSummary[]
   total: number
   skip: number
   limit: number
