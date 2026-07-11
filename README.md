@@ -1,2 +1,1 @@
 # leegality-frontend-exercise
-
