@@ -1,10 +1,15 @@
 import { BrowserRouter } from 'react-router-dom'
+import { ErrorBoundary } from './ErrorBoundary'
 import { AppRoutes } from './routes'
+import { ScrollToTop } from './ScrollToTop'
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <ScrollToTop />
+        <AppRoutes />
+      </BrowserRouter>
+    </ErrorBoundary>
   )
 }

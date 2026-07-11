@@ -1,23 +1,40 @@
-import { Link, Route, Routes } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
+import { Route, Routes, useLocation } from 'react-router-dom'
+import { ProductDetailSkeleton } from '@/features/product-detail/components/ProductDetailSkeleton'
 import ProductListingPage from '@/features/product-listing/ProductListingPage'
+import { ErrorBoundary } from './ErrorBoundary'
+import { NotFoundPage } from './NotFoundPage'
+
+/** Code-split: the detail chunk loads on first visit to /product/:id. */
+const ProductDetailPage = lazy(() => import('@/features/product-detail/ProductDetailPage'))
 
 export function AppRoutes() {
+  // Keying the route boundaries by pathname resets a crashed route on
+  // navigation. Search-param changes (filters) keep the same key, so the
+  // listing never remounts while filtering.
+  const { pathname } = useLocation()
+
   return (
     <Routes>
-      <Route path="/" element={<ProductListingPage />} />
-      {/* /product/:id lands in Phase 4; until then unmatched paths get a minimal stub. */}
       <Route
-        path="*"
+        path="/"
         element={
-          <main className="mx-auto max-w-7xl px-4 py-16 text-center">
-            <h1 className="text-2xl font-bold text-gray-900">Page not found</h1>
-            <p className="mt-2 text-sm text-gray-500">The product detail page lands in Phase 4.</p>
-            <Link to="/" className="mt-4 inline-block text-blue-600 hover:underline">
-              ← Back to products
-            </Link>
-          </main>
+          <ErrorBoundary key={pathname}>
+            <ProductListingPage />
+          </ErrorBoundary>
         }
       />
+      <Route
+        path="/product/:id"
+        element={
+          <ErrorBoundary key={pathname}>
+            <Suspense fallback={<ProductDetailSkeleton />}>
+              <ProductDetailPage />
+            </Suspense>
+          </ErrorBoundary>
+        }
+      />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )
 }

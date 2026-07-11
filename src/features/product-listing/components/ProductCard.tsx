@@ -1,17 +1,12 @@
-import { memo, type SyntheticEvent } from 'react'
+import { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { RatingStars } from '@/components/ui/RatingStars'
-import { FALLBACK_IMAGE_SRC } from '@/constants'
 import type { ProductSummary } from '@/types/product'
 import { formatPrice } from '@/utils/format'
+import { handleImageError } from '@/utils/image'
 
 interface ProductCardProps {
   product: ProductSummary
-}
-
-function handleImageError(event: SyntheticEvent<HTMLImageElement>) {
-  event.currentTarget.onerror = null
-  event.currentTarget.src = FALLBACK_IMAGE_SRC
 }
 
 /**
