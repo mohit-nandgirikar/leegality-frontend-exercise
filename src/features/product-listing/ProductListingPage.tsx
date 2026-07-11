@@ -70,7 +70,7 @@ export default function ProductListingPage() {
 
         <header className="border-b border-gray-200 pb-4 mb-6">
           <h1 className="text-3xl font-heading font-black text-gray-900">Product Catalog</h1>
-          <div className="mt-1 text-sm text-gray-500" aria-live="polite">
+          <div className="mt-1 text-sm text-gray-600" aria-live="polite">
             {isLoading ? (
               <Skeleton className="inline-block h-4 w-28 align-middle" />
             ) : (

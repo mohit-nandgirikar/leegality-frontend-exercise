@@ -61,6 +61,7 @@ export function Header() {
             <button
               type="button"
               disabled
+              aria-label="Search"
               className="flex items-center justify-center rounded-r-md bg-amazon-orange px-6 text-amazon-dark hover:bg-amazon-orange-hover focus-visible:outline-none disabled:opacity-90 select-none"
             >
               <svg
