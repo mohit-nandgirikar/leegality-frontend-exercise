@@ -1,70 +1,90 @@
-import { useState } from 'react'
-import { useProduct } from '@/features/product-detail/hooks/useProduct'
-import { useCategories } from './hooks/useCategories'
+import { useCallback, useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { EmptyState } from '@/components/ui/EmptyState'
+import { ErrorMessage } from '@/components/ui/ErrorMessage'
+import { Skeleton } from '@/components/ui/Skeleton'
+import { PAGE_SIZE } from '@/constants'
+import type { ProductSummary } from '@/types/product'
+import { Pagination } from './components/Pagination'
+import { ProductGrid } from './components/ProductGrid'
 import { useProducts } from './hooks/useProducts'
+import { getTotalPages, paginate } from './utils/paginate'
 
-const DEBUG_CATEGORIES = [null, 'smartphones', 'furniture', 'groceries'] as const
+const NO_PRODUCTS: ProductSummary[] = []
 
-/**
- * Phase 1 verification panel — throwaway debug render exercising the data
- * hooks (fetch, abort, cache). Replaced by the real listing UI in Phase 2.
- */
+function parsePage(raw: string | null): number {
+  const parsed = Number(raw)
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : 1
+}
+
 export default function ProductListingPage() {
-  const [category, setCategory] = useState<string | null>(null)
-  const products = useProducts(category)
-  const categories = useCategories()
-  const sampleProduct = useProduct('1')
+  const [searchParams, setSearchParams] = useSearchParams()
+  // Category/price/brand filters arrive in Phase 3 via useProductFilters.
+  const { data, isLoading, error, refetch } = useProducts(null)
+
+  const products = data?.products ?? NO_PRODUCTS
+  const totalPages = getTotalPages(products.length, PAGE_SIZE)
+  // Clamp so a stale ?page= from a shared/bookmarked URL still shows results.
+  const currentPage = Math.min(parsePage(searchParams.get('page')), totalPages)
+
+  const pageProducts = useMemo(
+    () => paginate(products, currentPage, PAGE_SIZE),
+    [products, currentPage],
+  )
+
+  const handlePageChange = useCallback(
+    (page: number) => {
+      setSearchParams((params) => {
+        const next = new URLSearchParams(params)
+        if (page <= 1) next.delete('page')
+        else next.set('page', String(page))
+        return next
+      })
+      window.scrollTo({ top: 0 })
+    },
+    [setSearchParams],
+  )
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-semibold">Product Catalog</h1>
-      <p className="mt-1 text-sm text-gray-500">Phase 1 verification — replaced in Phase 2.</p>
-
-      <section className="mt-6 rounded border border-gray-200 bg-white p-4">
-        <h2 className="font-medium">useProducts({category === null ? 'all' : category})</h2>
-        <div className="mt-2 flex gap-2">
-          {DEBUG_CATEGORIES.map((slug) => (
-            <button
-              key={slug ?? 'all'}
-              onClick={() => setCategory(slug)}
-              className={`rounded border px-2 py-1 text-sm ${
-                category === slug ? 'border-blue-600 bg-blue-50' : 'border-gray-300'
-              }`}
-            >
-              {slug ?? 'all'}
-            </button>
-          ))}
+    <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <header>
+        <h1 className="text-2xl font-bold text-gray-900">Product Catalog</h1>
+        <div className="mt-1 text-sm text-gray-500" aria-live="polite">
+          {isLoading ? (
+            <Skeleton className="inline-block h-4 w-28 align-middle" />
+          ) : (
+            !error && `${products.length} products`
+          )}
         </div>
-        <p className="mt-2 text-sm">
-          {products.isLoading && 'Loading…'}
-          {products.error && `Error: ${products.error.message}`}
-          {products.data &&
-            `${products.data.total} products — first: ${products.data.products[0]?.title ?? 'n/a'}`}
-        </p>
-      </section>
+      </header>
 
-      <section className="mt-4 rounded border border-gray-200 bg-white p-4">
-        <h2 className="font-medium">useCategories()</h2>
-        <p className="mt-2 text-sm">
-          {categories.isLoading && 'Loading…'}
-          {categories.error && `Error: ${categories.error.message}`}
-          {categories.data &&
-            `${categories.data.length} categories — e.g. ${categories.data
-              .slice(0, 3)
-              .map((c) => c.name)
-              .join(', ')}`}
-        </p>
-      </section>
+      <div className="mt-6 flex flex-col gap-6 lg:flex-row lg:gap-8">
+        <aside className="shrink-0 lg:w-64">
+          <div className="rounded-lg border border-dashed border-gray-300 p-4 text-sm text-gray-400">
+            Filters land in Phase 3
+          </div>
+        </aside>
 
-      <section className="mt-4 rounded border border-gray-200 bg-white p-4">
-        <h2 className="font-medium">useProduct('1')</h2>
-        <p className="mt-2 text-sm">
-          {sampleProduct.isLoading && 'Loading…'}
-          {sampleProduct.error && `Error: ${sampleProduct.error.message}`}
-          {sampleProduct.data &&
-            `${sampleProduct.data.title} — $${sampleProduct.data.price}, ${sampleProduct.data.brand ?? 'no brand'}, ${sampleProduct.data.images.length} image(s)`}
-        </p>
-      </section>
+        <section className="min-w-0 flex-1" aria-label="Products">
+          {error ? (
+            <ErrorMessage message={error.message} onRetry={refetch} />
+          ) : !isLoading && products.length === 0 ? (
+            <EmptyState
+              title="No products found"
+              description="Try adjusting your filters or check back later."
+            />
+          ) : (
+            <>
+              <ProductGrid products={pageProducts} isLoading={isLoading} />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </>
+          )}
+        </section>
+      </div>
     </main>
   )
 }
