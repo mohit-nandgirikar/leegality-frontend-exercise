@@ -45,8 +45,8 @@ export function Header() {
           </div>
 
           {/* Search bar mockup */}
-          <div className="relative flex flex-1 max-w-2xl items-center rounded-md bg-white text-gray-900 shadow-sm focus-within:ring-2 focus-within:ring-amazon-orange focus-within:ring-offset-2 focus-within:ring-offset-amazon-dark">
-            <div className="hidden items-center rounded-l-md border-r border-gray-200 bg-gray-100 px-3 py-2 text-xs font-medium text-gray-600 hover:bg-gray-200 sm:flex cursor-pointer">
+          <div className="relative flex flex-1 max-w-2xl h-10 items-stretch rounded-md bg-white text-gray-900 shadow-sm focus-within:ring-2 focus-within:ring-amazon-orange focus-within:ring-offset-2 focus-within:ring-offset-amazon-dark">
+            <div className="hidden items-center rounded-l-md border-r border-gray-200 bg-gray-100 px-3 text-xs font-medium text-gray-600 hover:bg-gray-200 sm:flex cursor-pointer select-none">
               All Categories
               <span aria-hidden="true" className="ml-1 text-[8px]">
                 ▼
@@ -61,15 +61,15 @@ export function Header() {
             <button
               type="button"
               disabled
-              className="flex h-full items-center justify-center rounded-r-md bg-amazon-orange p-2.5 text-amazon-dark hover:bg-amazon-orange-hover focus-visible:outline-none disabled:opacity-90"
+              className="flex items-center justify-center rounded-r-md bg-amazon-orange px-6 text-amazon-dark hover:bg-amazon-orange-hover focus-visible:outline-none disabled:opacity-90 select-none"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                strokeWidth={2.2}
+                strokeWidth={2.4}
                 stroke="currentColor"
-                className="h-4 w-4"
+                className="h-4.5 w-4.5"
               >
                 <path
                   strokeLinecap="round"
