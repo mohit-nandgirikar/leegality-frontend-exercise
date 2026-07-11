@@ -26,11 +26,11 @@ export const ProductCard = memo(function ProductCard({ product }: ProductCardPro
           loading="lazy"
           decoding="async"
           onError={handleImageError}
-          className="h-full w-full object-contain transition-transform duration-200 group-hover:scale-105"
+          className="h-full w-full object-contain motion-safe:transition-transform motion-safe:duration-200 motion-safe:group-hover:scale-105"
         />
       </div>
       <div className="flex flex-1 flex-col gap-1.5 p-4">
-        <h3 className="line-clamp-2 text-sm font-medium text-gray-900">{product.title}</h3>
+        <h2 className="line-clamp-2 text-sm font-medium text-gray-900">{product.title}</h2>
         <RatingStars rating={product.rating} />
         <p className="mt-auto pt-1 text-lg font-semibold text-gray-900">
           {formatPrice(product.price)}
