@@ -5,14 +5,16 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const VARIANT_CLASSES = {
-  primary: 'bg-blue-600 text-white hover:bg-blue-700',
-  secondary: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50',
+  primary:
+    'border border-[#ffd814] bg-gradient-to-b from-[#ffd814] to-[#f7ca00] text-gray-900 shadow-sm hover:from-[#f5c71a] hover:to-[#e6b800] focus-visible:ring-amazon-orange hover:shadow',
+  secondary:
+    'border border-gray-300 bg-gradient-to-b from-white to-gray-50 text-gray-800 shadow-xs hover:from-gray-50 hover:to-gray-100/90 focus-visible:ring-gray-400 hover:shadow-sm',
 } as const
 
 export function Button({ variant = 'primary', className = '', ...rest }: ButtonProps) {
   return (
     <button
-      className={`rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${VARIANT_CLASSES[variant]} ${className}`}
+      className={`font-heading text-xs font-semibold rounded-full px-5 py-2.5 transition-all duration-150 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100 ${VARIANT_CLASSES[variant]} ${className}`}
       {...rest}
     />
   )
