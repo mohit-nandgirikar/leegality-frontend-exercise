@@ -1,5 +1,6 @@
 import { memo, useMemo } from 'react'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { CustomCheckbox } from '@/components/ui/CustomCheckbox'
 
 interface BrandFilterProps {
   /** Facet list derived from the current category's dataset. */
@@ -23,31 +24,25 @@ export const BrandFilter = memo(function BrandFilter({
   }, [brands, selected])
 
   return (
-    <fieldset>
-      <legend className="text-sm font-semibold text-gray-900">Brand</legend>
+    <fieldset className="border-none p-0 m-0">
+      <legend className="font-heading text-sm font-bold text-gray-900 mb-2.5">Brand</legend>
       {isLoading ? (
-        <div className="mt-2 space-y-2">
+        <div className="space-y-2.5">
           {Array.from({ length: 4 }, (_, index) => (
-            <Skeleton key={index} className="h-4 w-2/3" />
+            <Skeleton key={index} className="h-6 w-5/6 animate-shimmer" />
           ))}
         </div>
       ) : displayBrands.length === 0 ? (
-        <p className="mt-2 text-sm text-gray-400">No brands in this category</p>
+        <p className="text-xs text-gray-400 italic mt-1">No brands in this category</p>
       ) : (
-        <div className="mt-2 max-h-72 space-y-1 overflow-y-auto pr-1">
+        <div className="custom-scrollbar max-h-64 space-y-0.5 overflow-y-auto pr-1">
           {displayBrands.map((brand) => (
-            <label
+            <CustomCheckbox
               key={brand}
-              className="flex cursor-pointer items-center gap-2 rounded px-1 py-0.5 text-sm text-gray-700 hover:text-gray-900"
-            >
-              <input
-                type="checkbox"
-                checked={selected.includes(brand)}
-                onChange={() => onToggle(brand)}
-                className="accent-blue-600"
-              />
-              {brand}
-            </label>
+              checked={selected.includes(brand)}
+              onChange={() => onToggle(brand)}
+              label={brand}
+            />
           ))}
         </div>
       )}

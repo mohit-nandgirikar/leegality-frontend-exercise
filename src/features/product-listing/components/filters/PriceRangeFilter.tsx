@@ -15,8 +15,7 @@ function parsePrice(raw: string): number | null {
   return Number.isFinite(value) && value >= 0 ? value : null
 }
 
-const INPUT_CLASSES =
-  'w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500'
+
 
 /**
  * Raw input state stays local so typing is instant; the URL is only updated
@@ -54,43 +53,53 @@ export const PriceRangeFilter = memo(function PriceRangeFilter({
   }, [debouncedMin, debouncedMax, minInput, maxInput, minPrice, maxPrice, onChange])
 
   return (
-    <fieldset>
-      <legend className="text-sm font-semibold text-gray-900">Price</legend>
-      <div className="mt-2 flex items-center gap-2">
+    <fieldset className="border-none p-0 m-0">
+      <legend className="font-heading text-sm font-bold text-gray-900 mb-2.5">Price</legend>
+      <div className="flex items-center gap-2">
         <div className="flex-1">
           <label htmlFor="price-min" className="sr-only">
             Minimum price
           </label>
-          <input
-            id="price-min"
-            type="number"
-            inputMode="decimal"
-            min="0"
-            step="0.01"
-            placeholder="Min"
-            value={minInput}
-            onChange={(event) => setMinInput(event.target.value)}
-            className={INPUT_CLASSES}
-          />
+          <div className="relative rounded-md shadow-2xs">
+            <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5 text-xs font-semibold text-gray-400">
+              $
+            </span>
+            <input
+              id="price-min"
+              type="number"
+              inputMode="decimal"
+              min="0"
+              step="0.01"
+              placeholder="Min"
+              value={minInput}
+              onChange={(event) => setMinInput(event.target.value)}
+              className="w-full rounded-md border border-gray-300 pl-6 pr-2.5 py-1.5 text-xs text-gray-900 placeholder-gray-400 bg-white focus:border-amazon-orange focus:outline-none focus:ring-1 focus:ring-amazon-orange transition-all duration-200"
+            />
+          </div>
         </div>
-        <span aria-hidden="true" className="text-gray-400">
+        <span aria-hidden="true" className="text-gray-400 font-medium">
           –
         </span>
         <div className="flex-1">
           <label htmlFor="price-max" className="sr-only">
             Maximum price
           </label>
-          <input
-            id="price-max"
-            type="number"
-            inputMode="decimal"
-            min="0"
-            step="0.01"
-            placeholder="Max"
-            value={maxInput}
-            onChange={(event) => setMaxInput(event.target.value)}
-            className={INPUT_CLASSES}
-          />
+          <div className="relative rounded-md shadow-2xs">
+            <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5 text-xs font-semibold text-gray-400">
+              $
+            </span>
+            <input
+              id="price-max"
+              type="number"
+              inputMode="decimal"
+              min="0"
+              step="0.01"
+              placeholder="Max"
+              value={maxInput}
+              onChange={(event) => setMaxInput(event.target.value)}
+              className="w-full rounded-md border border-gray-300 pl-6 pr-2.5 py-1.5 text-xs text-gray-900 placeholder-gray-400 bg-white focus:border-amazon-orange focus:outline-none focus:ring-1 focus:ring-amazon-orange transition-all duration-200"
+            />
+          </div>
         </div>
       </div>
     </fieldset>
