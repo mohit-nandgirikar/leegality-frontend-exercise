@@ -2,12 +2,13 @@
 
 An Amazon-style **Product Listing + Product Detail** app built on the [DummyJSON Products API](https://dummyjson.com/docs/products), for the Leegality Frontend Engineer assessment.
 
-**Live demo:** _add Vercel URL after deploying (see [Deployment](#deployment))_
+**Live demo:** [leegality-frontend-exercise.vercel.app](https://leegality-frontend-exercise.vercel.app/) · **Source:** [github.com/mohit-nandgirikar/leegality-frontend-exercise](https://github.com/mohit-nandgirikar/leegality-frontend-exercise)
 
 - Filterable, paginated product grid (category · price range · brand, all combinable)
-- Product detail page with history-aware back navigation — **filters persist when navigating back**
+- Product detail page with an interactive image gallery, buy box with stock indicators, and history-aware back navigation — **filters persist when navigating back**
+- Amazon-inspired design system: global header, deal badges, custom radio/checkbox controls, shimmer skeletons
 - Skeleton loading, error states with retry, 404s, and error boundaries throughout
-- 39 unit/component tests, CI pipeline, Lighthouse 90 / 100 / 100 (perf / a11y / best practices), CLS 0
+- 39 unit/component tests, CI pipeline, Lighthouse **accessibility 100 · best practices 100 · CLS 0**
 
 ---
 
@@ -16,7 +17,7 @@ An Amazon-style **Product Listing + Product Detail** app built on the [DummyJSON
 Requires **Node 20.19+ or 22+**.
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/mohit-nandgirikar/leegality-frontend-exercise.git
 cd leegality-frontend-exercise
 npm install
 npm run dev        # http://localhost:5173
@@ -53,10 +54,11 @@ No environment variables are required — the API base URL defaults to `https://
 src/
 ├── app/                  # App shell: router, error boundaries, 404, scroll restoration
 ├── api/                  # client.ts (typed fetch wrapper) + productService.ts (endpoints)
-├── components/ui/        # Dependency-free primitives: Skeleton, Button, RatingStars, ErrorMessage, EmptyState
+├── components/ui/        # Dependency-free primitives: Header, Skeleton, Button, CustomRadio,
+│                         # CustomCheckbox, RatingStars, ErrorMessage, EmptyState
 ├── features/
 │   ├── product-listing/  # Page, grid, cards, pagination, filters + hooks + pure utils
-│   └── product-detail/   # Page (lazy-loaded), product info, back button + hook
+│   └── product-detail/   # Page (lazy-loaded): image gallery + buy box, back button + hook
 ├── hooks/                # useFetch (abort + cache), useDebouncedValue
 ├── types/ · utils/ · constants/
 ```
@@ -89,7 +91,7 @@ One decision satisfies several requirements at once: **back navigation restores 
 
 | Technique            | Where                                                                                                                   |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Code splitting       | Detail page is a lazy route (separate ~1.3 KB chunk); main bundle ~80 KB gzip                                           |
+| Code splitting       | Detail page is a lazy route (separate ~3 KB chunk); main bundle ~83 KB gzip                                             |
 | `React.memo`         | `ProductCard`, `Pagination`, filter components — verified with render counters: toggling UI state re-renders zero cards |
 | `useMemo`            | Brand facet → filtered list → page slice; recomputed only when inputs change                                            |
 | Debouncing           | Price inputs commit to the URL after 400 ms; typing stays local and instant                                             |
@@ -98,7 +100,7 @@ One decision satisfies several requirements at once: **back navigation restores 
 | Payload trimming     | `?select=` limits listing responses to the fields cards use                                                             |
 | Image discipline     | Lazy loading, `decoding="async"`, fixed aspect boxes → **CLS 0**; skeletons dimensionally match real cards              |
 
-Lighthouse (production build, mobile emulation): **Performance 90 · Accessibility 100 · Best Practices 100**. Remaining LCP headroom is DummyJSON's image CDN under throttling — outside app control.
+Lighthouse (production, mobile emulation): **Accessibility 100 · Best Practices 100 · CLS 0**, Performance in the high 80s — the remaining LCP headroom is DummyJSON's image CDN under throttled emulation, outside app control.
 
 ### Accessibility
 
@@ -141,9 +143,10 @@ Deployed on **Vercel** (zero-config Vite):
 
 ## Improvements with more time
 
+- **Search functionality** — wire the header's search bar (currently a visual mock) to DummyJSON's `/products/search?q=` with a debounced input, adding `q` to the existing URL-state pattern so searches are shareable and survive navigation like every other filter.
+- **Sorting** (price / rating / newest), a rating filter (one new predicate in the composed filter pipeline), and a price histogram slider.
 - **Server-side faceted search** once the catalog outgrows a single response (the URL schema is already the API contract).
 - **TanStack Query** for stale-while-revalidate, cache invalidation, and hover-prefetching product details.
-- **Search & sort** (DummyJSON supports `/products/search?q=`), a rating filter (one new predicate), and a price histogram slider.
 - **E2E tests** (Playwright) covering the filter → paginate → detail → back journey; axe automated a11y checks in CI.
 - **Virtualized grid** if page sizes grow; `srcset`/image CDN for responsive images.
 - **Error reporting** (Sentry hook is already stubbed in the ErrorBoundary) and web-vitals RUM.
