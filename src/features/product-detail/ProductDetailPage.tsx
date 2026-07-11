@@ -11,15 +11,15 @@ export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>()
   const { data: product, isLoading, error, refetch } = useProduct(id)
 
+  if (isLoading) return <ProductDetailSkeleton />
+
   return (
     <div className="min-h-screen bg-gray-100/60 flex flex-col pb-12">
       <Header />
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex-1 w-full animate-fade-in-up">
         <BackButton />
         <div className="mt-4">
-          {isLoading ? (
-            <ProductDetailSkeleton />
-          ) : error?.status === 404 ? (
+          {error?.status === 404 ? (
             <EmptyState
               title="Product not found"
               description="This product doesn't exist or may have been removed."

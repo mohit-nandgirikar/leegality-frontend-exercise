@@ -26,7 +26,11 @@ export function Header() {
                 stroke="currentColor"
                 className="h-5 w-5 text-gray-300"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                />
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -120,7 +124,10 @@ export function Header() {
       {/* Sub bar */}
       <div className="bg-amazon-blue flex items-center px-4 py-1.5 sm:px-6 lg:px-8 text-xs font-semibold text-gray-100 border-b border-amazon-dark/30">
         <div className="mx-auto flex w-full max-w-7xl gap-4 overflow-x-auto custom-scrollbar whitespace-nowrap">
-          <button type="button" className="flex items-center gap-1 hover:text-white focus:outline-none">
+          <button
+            type="button"
+            className="flex items-center gap-1 hover:text-white focus:outline-none"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -129,15 +136,29 @@ export function Header() {
               stroke="currentColor"
               className="h-4 w-4"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
             </svg>
             All
           </button>
-          <a href="#" className="hover:text-white">Today's Deals</a>
-          <a href="#" className="hover:text-white">Customer Service</a>
-          <a href="#" className="hover:text-white">Registry</a>
-          <a href="#" className="hover:text-white">Gift Cards</a>
-          <a href="#" className="hover:text-white">Sell</a>
+          <a href="#" className="hover:text-white">
+            Today's Deals
+          </a>
+          <a href="#" className="hover:text-white">
+            Customer Service
+          </a>
+          <a href="#" className="hover:text-white">
+            Registry
+          </a>
+          <a href="#" className="hover:text-white">
+            Gift Cards
+          </a>
+          <a href="#" className="hover:text-white">
+            Sell
+          </a>
         </div>
       </div>
     </header>

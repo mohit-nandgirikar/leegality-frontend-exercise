@@ -89,7 +89,10 @@ export function ProductInfo({ product }: ProductInfoProps) {
           <div className="mt-2.5 flex items-center gap-4">
             <RatingStars rating={product.rating} />
             <span className="h-4 w-px bg-gray-200" />
-            <a href="#specs" className="text-xs font-bold text-[#007185] hover:text-[#c45500] hover:underline">
+            <a
+              href="#specs"
+              className="text-xs font-bold text-[#007185] hover:text-[#c45500] hover:underline"
+            >
               Specifications
             </a>
           </div>
@@ -111,7 +114,8 @@ export function ProductInfo({ product }: ProductInfoProps) {
           </div>
           {hasDiscount && (
             <p className="text-[12px] font-semibold text-green-700">
-              You save: {(originalPrice - product.price).toFixed(2)} ({product.discountPercentage.toFixed(0)}%)
+              You save: {(originalPrice - product.price).toFixed(2)} (
+              {product.discountPercentage.toFixed(0)}%)
             </p>
           )}
         </div>
@@ -192,10 +196,12 @@ export function ProductInfo({ product }: ProductInfoProps) {
         {/* Mock Delivery options */}
         <div className="text-[11.5px] leading-relaxed text-gray-600 space-y-1.5 bg-gray-50/50 rounded-xl p-3 border border-gray-100">
           <p>
-            FREE delivery <span className="font-bold text-gray-800">Tuesday, July 14</span> on orders over $35.
+            FREE delivery <span className="font-bold text-gray-800">Tuesday, July 14</span> on
+            orders over $35.
           </p>
           <p>
-            Or fastest delivery <span className="font-bold text-gray-800">Tomorrow, July 12</span>. Order within <span className="font-semibold text-emerald-700">4 hrs 12 mins</span>.
+            Or fastest delivery <span className="font-bold text-gray-800">Tomorrow, July 12</span>.
+            Order within <span className="font-semibold text-emerald-700">4 hrs 12 mins</span>.
           </p>
           <div className="flex items-center gap-1 text-[11px] text-[#007185] hover:underline cursor-pointer">
             <svg
@@ -206,7 +212,11 @@ export function ProductInfo({ product }: ProductInfoProps) {
               stroke="currentColor"
               className="h-3.5 w-3.5"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+              />
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"

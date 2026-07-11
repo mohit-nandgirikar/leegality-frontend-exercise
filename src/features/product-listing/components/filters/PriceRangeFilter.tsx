@@ -15,8 +15,6 @@ function parsePrice(raw: string): number | null {
   return Number.isFinite(value) && value >= 0 ? value : null
 }
 
-
-
 /**
  * Raw input state stays local so typing is instant; the URL is only updated
  * after the debounce settles. Commits fire when the debounced values match the

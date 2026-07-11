@@ -3,7 +3,7 @@
 @theme {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-heading: 'Outfit', system-ui, sans-serif;
-  
+
   --color-amazon-dark: #131921;
   --color-amazon-blue: #232f3e;
   --color-amazon-orange: #ff9900;
@@ -17,7 +17,12 @@
     @apply bg-gray-50 text-gray-900 antialiased selection:bg-amber-200;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-heading);
     @apply font-bold tracking-tight;
   }

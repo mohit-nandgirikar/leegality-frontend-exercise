@@ -70,77 +70,79 @@ export default function ProductListingPage() {
 
         <header className="border-b border-gray-200 pb-4 mb-6">
           <h1 className="text-3xl font-heading font-black text-gray-900">Product Catalog</h1>
-        <div className="mt-1 text-sm text-gray-500" aria-live="polite">
-          {isLoading ? (
-            <Skeleton className="inline-block h-4 w-28 align-middle" />
-          ) : (
-            !error && `${filteredProducts.length} products found`
-          )}
-        </div>
-      </header>
+          <div className="mt-1 text-sm text-gray-500" aria-live="polite">
+            {isLoading ? (
+              <Skeleton className="inline-block h-4 w-28 align-middle" />
+            ) : (
+              !error && `${filteredProducts.length} products found`
+            )}
+          </div>
+        </header>
 
-      <button
-        type="button"
-        onClick={() => setShowFilters((open) => !open)}
-        aria-expanded={showFilters}
-        aria-controls="filter-panel"
-        className="mt-4 inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus-visible:ring-2 focus-visible:ring-blue-500 lg:hidden"
-      >
-        Filters
-        {activeFilterCount > 0 && ` (${activeFilterCount})`}
-        <span aria-hidden="true" className="text-xs">
-          {showFilters ? '▲' : '▼'}
-        </span>
-      </button>
-
-      <div className="mt-4 flex flex-col gap-6 lg:mt-6 lg:flex-row lg:gap-8">
-        <aside
-          id="filter-panel"
-          aria-label="Filters"
-          className={`shrink-0 lg:block lg:w-64 ${showFilters ? '' : 'hidden'}`}
+        <button
+          type="button"
+          onClick={() => setShowFilters((open) => !open)}
+          aria-expanded={showFilters}
+          aria-controls="filter-panel"
+          className="mt-4 inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus-visible:ring-2 focus-visible:ring-blue-500 lg:hidden"
         >
-          <FilterSidebar
-            categories={categoriesQuery.data}
-            isCategoriesLoading={categoriesQuery.isLoading}
-            brands={brands}
-            isBrandsLoading={isLoading}
-            filters={filters}
-            hasActiveFilters={hasActiveFilters}
-            onCategoryChange={setCategory}
-            onBrandToggle={toggleBrand}
-            onPriceRangeChange={setPriceRange}
-            onClearFilters={clearFilters}
-          />
-        </aside>
+          Filters
+          {activeFilterCount > 0 && ` (${activeFilterCount})`}
+          <span aria-hidden="true" className="text-xs">
+            {showFilters ? '▲' : '▼'}
+          </span>
+        </button>
 
-        <section id="products" tabIndex={-1} className="min-w-0 flex-1" aria-label="Products">
-          {error ? (
-            <ErrorMessage message={error.message} onRetry={refetch} />
-          ) : !isLoading && filteredProducts.length === 0 ? (
-            <EmptyState
-              title={hasActiveFilters ? 'No products match your filters' : 'No products found'}
-              description={
-                hasActiveFilters
-                  ? 'Try widening the price range or removing some filters.'
-                  : 'Check back later.'
-              }
-              action={
-                hasActiveFilters ? <Button onClick={clearFilters}>Clear filters</Button> : undefined
-              }
+        <div className="mt-4 flex flex-col gap-6 lg:mt-6 lg:flex-row lg:gap-8">
+          <aside
+            id="filter-panel"
+            aria-label="Filters"
+            className={`shrink-0 lg:block lg:w-64 ${showFilters ? '' : 'hidden'}`}
+          >
+            <FilterSidebar
+              categories={categoriesQuery.data}
+              isCategoriesLoading={categoriesQuery.isLoading}
+              brands={brands}
+              isBrandsLoading={isLoading}
+              filters={filters}
+              hasActiveFilters={hasActiveFilters}
+              onCategoryChange={setCategory}
+              onBrandToggle={toggleBrand}
+              onPriceRangeChange={setPriceRange}
+              onClearFilters={clearFilters}
             />
-          ) : (
-            <>
-              <ProductGrid products={pageProducts} isLoading={isLoading} />
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setPage}
+          </aside>
+
+          <section id="products" tabIndex={-1} className="min-w-0 flex-1" aria-label="Products">
+            {error ? (
+              <ErrorMessage message={error.message} onRetry={refetch} />
+            ) : !isLoading && filteredProducts.length === 0 ? (
+              <EmptyState
+                title={hasActiveFilters ? 'No products match your filters' : 'No products found'}
+                description={
+                  hasActiveFilters
+                    ? 'Try widening the price range or removing some filters.'
+                    : 'Check back later.'
+                }
+                action={
+                  hasActiveFilters ? (
+                    <Button onClick={clearFilters}>Clear filters</Button>
+                  ) : undefined
+                }
               />
-            </>
-          )}
-        </section>
-      </div>
-    </main>
-  </div>
+            ) : (
+              <>
+                <ProductGrid products={pageProducts} isLoading={isLoading} />
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                />
+              </>
+            )}
+          </section>
+        </div>
+      </main>
+    </div>
   )
 }
