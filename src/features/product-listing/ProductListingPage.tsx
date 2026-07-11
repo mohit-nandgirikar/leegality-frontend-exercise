@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Header } from '@/components/ui/Header'
 import { Button } from '@/components/ui/Button'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { ErrorMessage } from '@/components/ui/ErrorMessage'
@@ -57,16 +58,18 @@ export default function ProductListingPage() {
     (filters.maxPrice !== null ? 1 : 0)
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <a
-        href="#products"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-10 focus:rounded-md focus:bg-blue-600 focus:px-4 focus:py-2 focus:text-sm focus:text-white"
-      >
-        Skip to products
-      </a>
+    <div className="min-h-screen bg-gray-100/60 flex flex-col pb-12">
+      <Header />
+      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex-1 w-full animate-fade-in-up">
+        <a
+          href="#products"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-10 focus:rounded-md focus:bg-amazon-orange focus:px-4 focus:py-2 focus:text-sm focus:text-amazon-dark"
+        >
+          Skip to products
+        </a>
 
-      <header>
-        <h1 className="text-2xl font-bold text-gray-900">Product Catalog</h1>
+        <header className="border-b border-gray-200 pb-4 mb-6">
+          <h1 className="text-3xl font-heading font-black text-gray-900">Product Catalog</h1>
         <div className="mt-1 text-sm text-gray-500" aria-live="polite">
           {isLoading ? (
             <Skeleton className="inline-block h-4 w-28 align-middle" />
@@ -138,5 +141,6 @@ export default function ProductListingPage() {
         </section>
       </div>
     </main>
+  </div>
   )
 }
