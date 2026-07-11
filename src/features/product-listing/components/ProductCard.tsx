@@ -14,27 +14,65 @@ interface ProductCardProps {
  * interactions re-render the parent — unchanged cards must not re-render.
  */
 export const ProductCard = memo(function ProductCard({ product }: ProductCardProps) {
+  const isTopRated = product.rating >= 4.5
+
   return (
     <Link
       to={`/product/${product.id}`}
-      className="group flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md focus-visible:ring-2 focus-visible:ring-blue-500"
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-350 ease-out hover:-translate-y-1.5 hover:shadow-xl hover:border-amazon-orange/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amazon-orange focus-visible:ring-offset-2"
     >
-      <div className="aspect-square w-full overflow-hidden bg-gray-100">
+      {/* Top Rated Badge */}
+      {isTopRated && (
+        <span className="absolute top-3.5 left-3.5 z-10 rounded-md bg-amazon-dark px-2.5 py-1 text-[10px] font-heading font-black tracking-wide text-amazon-orange shadow-xs border border-amazon-orange/20 select-none">
+          TOP RATED
+        </span>
+      )}
+
+      {/* Image Gallery wrapper */}
+      <div className="relative aspect-square w-full overflow-hidden bg-gray-50/50 flex items-center justify-center p-6 border-b border-gray-100/80">
         <img
           src={product.thumbnail}
           alt={product.title}
           loading="lazy"
           decoding="async"
           onError={handleImageError}
-          className="h-full w-full object-contain motion-safe:transition-transform motion-safe:duration-200 motion-safe:group-hover:scale-105"
+          className="h-full w-full object-contain mix-blend-multiply transition-transform duration-350 ease-out group-hover:scale-[1.06]"
         />
+        {/* Subtle hover glow backdrop */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/[0.015] transition-colors duration-350" />
       </div>
-      <div className="flex flex-1 flex-col gap-1.5 p-4">
-        <h2 className="line-clamp-2 text-sm font-medium text-gray-900">{product.title}</h2>
-        <RatingStars rating={product.rating} />
-        <p className="mt-auto pt-1 text-lg font-semibold text-gray-900">
-          {formatPrice(product.price)}
-        </p>
+
+      {/* Details Area */}
+      <div className="flex flex-1 flex-col gap-2 p-4">
+        {/* Brand label */}
+        {product.brand && (
+          <span className="text-[10px] font-heading font-extrabold tracking-wider text-amazon-orange uppercase">
+            {product.brand}
+          </span>
+        )}
+
+        {/* Product Title */}
+        <h2 className="line-clamp-2 font-heading text-[13.5px] font-bold text-gray-800 leading-snug group-hover:text-[#007185] transition-colors duration-200 min-h-9">
+          {product.title}
+        </h2>
+
+        {/* Stars */}
+        <div className="mt-0.5">
+          <RatingStars rating={product.rating} />
+        </div>
+
+        {/* Pricing Info */}
+        <div className="mt-auto pt-2.5 flex items-baseline justify-between border-t border-gray-100">
+          <div className="flex flex-col">
+            <span className="text-[9px] uppercase font-bold tracking-widest text-gray-400">Price</span>
+            <span className="text-[17px] font-black text-gray-900 leading-none mt-0.5">
+              {formatPrice(product.price)}
+            </span>
+          </div>
+          <span className="text-[10px] font-bold text-[#007185] group-hover:underline">
+            View Details
+          </span>
+        </div>
       </div>
     </Link>
   )
